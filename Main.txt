@@ -1,0 +1,61 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("GunnarDiscord's Giant Sim GUI", "Synapse")
+local EventAutoFarm = Window:NewTab("Event")
+local AutoFarm = Window:NewTab("AutoFarm")
+local Etc = Window:NewTab("Etc")
+local settings = Window:NewTab("Settings")
+local EventSection = EventAutoFarm:NewSection("Winter Event")
+local SettingsSection = settings:NewSection("Settings")
+local autofarmsection = AutoFarm:NewSection("AutoFarm")
+
+
+EventSection:NewToggle("Auto Snowman Bundle", "Stand infront of the castle then toggle this. Will Auto kill them and other can see them.", function(bool)
+    shared.toggle = bool
+    local a = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+    while shared.toggle == true do
+        for i,v in pairs(workspace.NPC.Snowmen:GetChildren()) do
+            if shared.toggle == false then
+                break
+            end
+            game.Players.LocalPlayer.Character.Head.Anchored = true
+            v.HumanoidRootPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-5)
+            wait(0.1)
+        end
+    end
+    if shared.toggle == false then
+        game.Players.LocalPlayer.Character.Head.Anchored = false
+    end
+end)
+EventSection:NewToggle("Tp autofarm to them", "You will tp behind them and auto kill them.", function(bool)
+    shared.toggle = bool
+    local a = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+    if shared.toggle == true then
+        repeat
+            repeat
+                if shared.toggle == false then
+                    break
+                end
+                wait(0.01)
+                v = game:GetService("Workspace").NPC.Snowmen.Snowman
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5)
+                game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAttackStart:FireServer()
+                wait()
+                game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAnimComplete:FireServer()
+            until v.Humanoid.Health <= 0
+            v:Destroy()
+        until shared.toggle == false
+    end
+    
+end)
+autofarmsection:NewToggle("Auto Swing", "Just Some Auto Swing Script(Click manualy with this to double the damage).", function(a)
+    shared.toggle = a
+    while shared.toggle == true do
+        game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAttackStart:FireServer()
+        wait()
+        game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAnimComplete:FireServer()
+    end
+end)
+
+SettingsSection:NewKeybind("Minimize Gui", 'The Minimize Key is defaulted to "Riht Shift"', Enum.KeyCode.RightShift, function()
+	Library:ToggleUI()
+end)
