@@ -1,12 +1,14 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("GunnarDiscord's Giant Sim GUI", "Synapse")
+local Window = Library.CreateLib("GunnarDiscord's Giant Sim GUI                  Updated:18.12.21 22:43", "Synapse")
 local EventAutoFarm = Window:NewTab("Event")
 local AutoFarm = Window:NewTab("AutoFarm")
 local Etc = Window:NewTab("Etc")
 local settings = Window:NewTab("Settings")
 local EventSection = EventAutoFarm:NewSection("Winter Event")
 local SettingsSection = settings:NewSection("Settings")
-local autofarmsection = AutoFarm:NewSection("AutoFarm")
+local AutoFarmSection = AutoFarm:NewSection("AutoFarm")
+local BuySection = Etc:NewSection("Buy Best")
+local EtcSection = Etc:NewSection("Etc")
 
 
 EventSection:NewToggle("Auto Snowman Bundle", "Stand infront of the castle then toggle this. Will Auto kill them and other can see them.", function(bool)
@@ -26,7 +28,7 @@ EventSection:NewToggle("Auto Snowman Bundle", "Stand infront of the castle then 
         game.Players.LocalPlayer.Character.Head.Anchored = false
     end
 end)
-EventSection:NewToggle("Tp autofarm to them", "You will tp behind them and auto kill them.", function(bool)
+EventSection:NewToggle("Tp To Snowman Farm", "You will tp behind them and auto kill them.", function(bool)
     shared.toggle = bool
     local a = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
     if shared.toggle == true then
@@ -47,7 +49,7 @@ EventSection:NewToggle("Tp autofarm to them", "You will tp behind them and auto 
     end
     
 end)
-autofarmsection:NewToggle("Auto Swing", "Just Some Auto Swing Script(Click manualy with this to double the damage).", function(a)
+AutoFarmSection:NewToggle("Auto Swing", "Just Some Auto Swing Script(Click manualy with this to double the damage).", function(a)
     shared.toggle = a
     while shared.toggle == true do
         game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAttackStart:FireServer()
@@ -55,7 +57,57 @@ autofarmsection:NewToggle("Auto Swing", "Just Some Auto Swing Script(Click manua
         game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAnimComplete:FireServer()
     end
 end)
+AutoFarmSection:NewToggle("")
+BuySection:NewToggle("Auto Buy 100k Weapon Best", "Auto sell and buys the 100k Weapon chest for the best", function(bool)
+    shared.toggle = bool
+    while shared.toggle == true do
+        local args = {
+            [1] = "weapon",
+            [2] = 6
+        }
+        game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.GameService.OpenLegendaryCrate:InvokeServer(unpack(args))
+    end
+end)
+BuySection:NewToggle("Auto Buy 100k Armour Best", "Auto sell and buys the 100k Armour chest for the best", function(bool)
+    shared.toggle = bool
+    while shared.toggle == true do
+        local args = {
+            [1] = "skin",
+            [2] = 6
+        }
+        game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.GameService.OpenLegendaryCrate:InvokeServer(unpack(args))
+    end
+end)
+BuySection:NewToggle("Auto Buy 10M Armour Best", "Buy 10M Armour Chest for the best", function(bool)
+    shared.toggle = bool
+    while shared.toggle == true do
+        local args = {
+            [1] = "skin",
+            [2] = 6
+        }
+        game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.GameService.OpenMythicCrate:InvokeServer(unpack(args))
+    end
+end)
+BuySection:NewToggle("Auto Buy 50M Weapon Best", "Buy 50M Weapon Chest for the best", function(bool)
+    shared.toggle = bool
+    while shared.toggle == true do
+        local args = {
+            [1] = "weapon",
+            [2] = 6
+        }
+        game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.GameService.OpenMythicCrate:InvokeServer(unpack(args))
+    end
+end)
+EtcSection:NewToggle("Auto Rebirth", "Auto Rebirth and Auto Swing", function(bool)
+    shared.toggle = bool
+    while shared.toggle == true do 
+        game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.GameService.RebirthRequest:InvokeServer()
+        game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAttackStart:FireServer()
+        wait()
+        game.ReplicatedStorage.Aero.AeroRemoteServices.GameService.WeaponAnimComplete:FireServer()
+    end 
+end)
 
-SettingsSection:NewKeybind("Minimize Gui", 'The Minimize Key is defaulted to "Riht Shift"', Enum.KeyCode.RightShift, function()
+SettingsSection:NewKeybind("Minimize Gui", 'The Minimize Key is defaulted to "Right Shift"', Enum.KeyCode.RightShift, function()
 	Library:ToggleUI()
 end)
